@@ -16,6 +16,7 @@ class ArticleParser:
             '#financialplanningprofession']
         options = ChromeOptions()
         options.headless = headless
+        options.add_argument('--disable-blink-features=AutomationControlled')
         driver = uc.Chrome(options=options)
         driver.implicitly_wait(20)
         self._driver = driver
@@ -28,7 +29,7 @@ class ArticleParser:
         # раскомментируй этот код и нажми, удерживая, 
         # на кнопку press & hold, останови программу и снова закомментируй
 
-        # time.sleep(300)
+        time.sleep(300)
         first_article_url = self._driver.find_element(By.CSS_SELECTOR, first_article_link_selector).get_attribute('href')
         self._driver.get(first_article_url)
 
