@@ -1,6 +1,7 @@
 import time
 
 import schedule
+from xvfbwrapper import Xvfb
 
 from parser.zerohedge.zerohedge_parser import ZeroHedgeParser
 from parser.bloomberg.bloomberg_parser import BloombergParser
@@ -11,26 +12,26 @@ from logger import logger
 
 
 def send_articles():
-    logger.info('start init parsers')
-    zerohedge_parser = ZeroHedgeParser(ZEROHEDGE_ARTICLES_PAGE_URL, False)
-    logger.info('zerohedge parser init')
-    bloomberg_parser = BloombergParser(BLOOMBERG_ARTICLES_PAGE_URL, False)
-    logger.info('end init parsers')
-    logger.info('start parsing')
-    zerohedge_article = zerohedge_parser.get_latest_article()
-    bloomberg_article = bloomberg_parser.get_latest_article()
-    logger.info('end parsing')
-    logger.info('start sending')
-    telegram_sender = TelegramSender(TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL_ID)
-    telegram_sender.send_article(zerohedge_article)
-    telegram_sender.send_article(bloomberg_article)
-    logger.info('end sending')
+    with Xvfb() as xvfb:
+        logger.info('start init parsers')
+        zerohedge_parser = ZeroHedgeParser(ZEROHEDGE_ARTICLES_PAGE_URL, False)
+        logger.info('zerohedge parser init')
+        bloomberg_parser = BloombergParser(BLOOMBERG_ARTICLES_PAGE_URL, False)
+        logger.info('bloomberg parser init')
+        logger.info('start parsing')
+        zerohedge_article = zerohedge_parser.get_latest_article()
+        bloomberg_article = bloomberg_parser.get_latest_article()
+        logger.info('end parsing')
+        logger.info('start sending')
+        telegram_sender = TelegramSender(TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL_ID)
+        telegram_sender.send_article(zerohedge_article)
+        telegram_sender.send_article(bloomberg_article)
+        logger.info('end sending')
 
 
 if __name__ == '__main__':
-    send_articles()
-    # schedule.every().day.at('20:31').do(send_articles)
+    schedule.every().day.at('01:15').do(send_articles)
 
-    # while True:
-        # schedule.run_pending()
-        # time.sleep(1)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)

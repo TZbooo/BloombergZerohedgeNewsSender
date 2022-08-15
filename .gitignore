@@ -4,3 +4,4 @@ __pycache__
 *.pyc
 *.log
 *.swp
+github_token.txt
