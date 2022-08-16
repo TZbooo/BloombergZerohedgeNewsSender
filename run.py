@@ -1,4 +1,5 @@
 import time
+import os
 
 import schedule
 from xvfbwrapper import Xvfb
@@ -30,7 +31,9 @@ def send_articles():
 
 
 if __name__ == '__main__':
-    schedule.every().day.at('01:15').do(send_articles)
+    os.environ['TZ'] = 'America/New_York'
+    time.tzset()
+    schedule.every().day.at('18:25').do(send_articles)
 
     while True:
         schedule.run_pending()
