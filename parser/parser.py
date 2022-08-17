@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup as bs
 
 
-class ArticleParser:
+class ArticlesParser:
     def __init__(self, articles_page_url: str, source: str, headless: bool) -> None:
         self._articles_page_url = articles_page_url
         self._source = source
@@ -19,7 +19,6 @@ class ArticleParser:
             '#financialplanningprofession']
         options = ChromeOptions()
         options.headless = headless
-        options.add_argument('--disable-blink-features=AutomationControlled')
         caps = DesiredCapabilities().CHROME
         caps["pageLoadStrategy"] = "eager"
         driver = uc.Chrome(options=options, desired_capabilities=caps)

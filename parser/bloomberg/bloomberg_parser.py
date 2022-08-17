@@ -4,12 +4,12 @@ from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup as bs
 
 from parser.data_models import Article
-from parser import ArticleParser
+from parser import ArticlesParser
 from logger import logger
 
 
-class BloombergParser(ArticleParser):
-    def __init__(self, articles_page_url: str, headless: bool = True) -> None:
+class BloombergParser(ArticlesParser):
+    def __init__(self, articles_page_url: str, headless: bool) -> None:
         super().__init__(articles_page_url, 'BLOOMBERG', headless)
 
     def get_latest_article(self) -> Article:
