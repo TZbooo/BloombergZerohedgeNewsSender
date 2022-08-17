@@ -6,23 +6,18 @@ from .telegram.config import TELEGRAM_MESSAGE_LENGTH_LIMIT
 
 class Sender:
     def _get_message_for_send(self, article: Article, social_network: str) -> str:
-        message_text = '\n\n'.join(article.text)
+        message_text_config = {
+            'TELEGRAM': {
+                'Bloomberg': '\n\n'.join(article.text[:2]),
+                'Zerohedge': '\n\n'.join(article.text[:5])
+            }
+        }
+
+        message_text = message_text_config[social_network][article.source]
         message_title = f'<b>{article.title}</b>\n\n'
         message_source = f'<b>{article.source}</b>\n\n'
         link_to_learn_more = '...\n<a href="https://www.facebook.com/SovereignWealthManagementLLC/">learn more</a>\n'
         message_hashtags = '  '.join(article.hashtags)
-
-        if social_network == 'TELEGRAM':
-            message_text = message_text[:TELEGRAM_MESSAGE_LENGTH_LIMIT - len(message_title) - len(message_source) - len(message_hashtags) - len(link_to_learn_more)]
-
-            # если слово обрезается не полностью, а допустим пополам, 
-            # то это этот код ищет часть слова, которое осталось в конце и пробелы до следующего слова
-            message_end_regex = re.search(r'\s+\S*$', message_text)
-
-            # если найдено слово, которое обрезалось не полностью, тогда этот код обрежет его,
-            # чтобы сообщение выглядело красиво
-            if message_end_regex:
-                message_text = re.sub(fr'{message_end_regex.group(0)}$', '', message_text)
 
         message_text = f'{message_title}{message_text}{link_to_learn_more}{message_source}{message_hashtags}'
         return message_text

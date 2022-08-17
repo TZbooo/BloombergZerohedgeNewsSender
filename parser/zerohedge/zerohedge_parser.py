@@ -1,13 +1,13 @@
 from bs4 import BeautifulSoup as bs
 from selenium.webdriver.common.by import By
 
-from parser import ArticleParser
+from parser import ArticlesParser
 from parser.data_models import Article
 from logger import logger
 
 
-class ZeroHedgeParser(ArticleParser):
-    def __init__(self, articles_page_url: str, headless: bool = True) -> None:
+class ZeroHedgeParser(ArticlesParser):
+    def __init__(self, articles_page_url: str, headless: bool) -> None:
         super().__init__(articles_page_url, 'ZEROHEDGE', headless)
 
     def get_latest_article(self) -> Article:

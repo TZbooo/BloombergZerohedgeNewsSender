@@ -12,6 +12,7 @@ from sender.telegram.config import TELEGRAM_CHANNEL_ID, TELEGRAM_BOT_TOKEN
 from logger import logger
 
 
+@logger.catch
 def send_articles():
     with Xvfb() as xvfb:
         logger.info('start init parsers')
