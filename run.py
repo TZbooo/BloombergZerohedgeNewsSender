@@ -30,8 +30,4 @@ def send_articles():
 
 
 if __name__ == '__main__':
-    schedule.every().day.at('01:15').do(send_articles)
-
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+    send_articles()

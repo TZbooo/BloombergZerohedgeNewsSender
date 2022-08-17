@@ -6,14 +6,23 @@ from .telegram.config import TELEGRAM_MESSAGE_LENGTH_LIMIT
 
 class Sender:
     def _get_message_for_send(self, article: Article, social_network: str) -> str:
-        message_text = '\n\n'.join(article.text)
+        message_text = ''
+        if social_network == 'TELEGRAM':
+            message_text = '\n\n'.join(article.text[:2])
+        else:
+            message_text = '\n\n'.join(article.text)
+
         message_title = f'<b>{article.title}</b>\n\n'
         message_source = f'<b>{article.source}</b>\n\n'
         link_to_learn_more = '...\n<a href="https://www.facebook.com/SovereignWealthManagementLLC/">learn more</a>\n'
         message_hashtags = '  '.join(article.hashtags)
 
         if social_network == 'TELEGRAM':
-            message_text = message_text[:TELEGRAM_MESSAGE_LENGTH_LIMIT - len(message_title) - len(message_source) - len(message_hashtags) - len(link_to_learn_more)]
+            message_text = message_text[:TELEGRAM_MESSAGE_LENGTH_LIMIT \
+                                        - len(message_title) \
+                                        - len(message_source) \
+                                        - len(message_hashtags) \
+                                        - len(link_to_learn_more)]
 
             # если слово обрезается не полностью, а допустим пополам, 
             # то это этот код ищет часть слова, которое осталось в конце и пробелы до следующего слова
