@@ -9,8 +9,8 @@ from logger import logger
 
 
 class BloombergParser(ArticlesParser):
-    def __init__(self, articles_page_url: str, headless: bool) -> None:
-        super().__init__(articles_page_url, 'BLOOMBERG', headless)
+    def __init__(self, articles_page_url: str) -> None:
+        super().__init__(articles_page_url, 'BLOOMBERG')
 
     def get_latest_article(self) -> Article:
         first_article_soup = self._go_to_first_article_page('div[class^=storyItem__] > a')

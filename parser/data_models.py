@@ -11,3 +11,4 @@ class Article:
 
 class SocialNetwork:
     TELEGRAM = 'TELEGRAM'
+    FACEBOOK = 'FACEBOOK'

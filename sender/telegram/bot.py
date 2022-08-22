@@ -7,7 +7,7 @@ from sender.sender import Sender
 
 
 class TelegramSender(Sender):
-    def __init__(self, bot_token, channel_id):
+    def __init__(self, bot_token: str, channel_id: int) -> None:
         self.__bot = TeleBot(bot_token, parse_mode='html')
         self.__channel_id = channel_id
 

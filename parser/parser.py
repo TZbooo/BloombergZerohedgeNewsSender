@@ -2,14 +2,13 @@ import time
 
 import requests
 import undetected_chromedriver as uc
-from selenium.webdriver import ChromeOptions
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup as bs
 
 
 class ArticlesParser:
-    def __init__(self, articles_page_url: str, source: str, headless: bool) -> None:
+    def __init__(self, articles_page_url: str, source: str) -> None:
         self._articles_page_url = articles_page_url
         self._source = source
         self._hashtags = [
@@ -17,11 +16,9 @@ class ArticlesParser:
             '#invesmentportfolio',
             '#CFA', 
             '#financialplanningprofession']
-        options = ChromeOptions()
-        options.headless = headless
         caps = DesiredCapabilities().CHROME
         caps["pageLoadStrategy"] = "eager"
-        driver = uc.Chrome(options=options, desired_capabilities=caps)
+        driver = uc.Chrome(desired_capabilities=caps)
         driver.implicitly_wait(20)
         self._driver = driver
 
@@ -30,10 +27,11 @@ class ArticlesParser:
         time.sleep(20)
         articles_page_soup = bs(self._driver.page_source, 'html.parser')
 
-        # когда ты, тестируя, будешь запускать этот парсер слишком часто,
-        # ты увидишь сообщение о подозрительной активности, если ты увидел это сообщение -- 
-        # раскомментируй этот код и нажми, удерживая, 
-        # на кнопку press & hold, останови программу и снова закомментируй
+        # when you will test this parser very often,
+        # you will see message about strange activily, and if you saw this message --
+        # uncomment this code and press holding,
+        # to "press & hold" button, stop program and comment again
+
         # time.sleep(300)
         first_article_url = articles_page_soup.select_one(first_article_link_selector).get('href')
         if self._source == 'ZEROHEDGE':
