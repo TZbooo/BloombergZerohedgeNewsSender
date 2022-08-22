@@ -39,12 +39,10 @@ def send_articles():
 
 
 if __name__ == '__main__':
-    send_articles()
-    '''
     os.environ['TZ'] = 'America/New_York'
     time.tzset()
     schedule.every().day.at('18:25').do(send_articles)
 
     while True:
         schedule.run_pending()
-        time.sleep(1)'''
+        time.sleep(1)
