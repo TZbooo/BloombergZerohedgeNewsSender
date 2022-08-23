@@ -20,13 +20,15 @@ def send_articles():
         logger.info('start init parsers')
         zerohedge_parser = ZeroHedgeParser(ZEROHEDGE_ARTICLES_PAGE_URL)
         logger.info('zerohedge parser init')
+
+        logger.info('start zerohedge parsing')
+        zerohedge_article = zerohedge_parser.get_latest_article() 
+
         bloomberg_parser = BloombergParser(BLOOMBERG_ARTICLES_PAGE_URL)
         logger.info('bloomberg parser init')
 
-        logger.info('start parsing')
-        zerohedge_article = zerohedge_parser.get_latest_article()
+        logger.info('start bloomberg parser')
         bloomberg_article = bloomberg_parser.get_latest_article()
-        logger.info('end parsing')
 
         logger.info('start sending')
         facebook_sender = FacebookSender(FACEBOOK_GROUP_URL, FACEBOOK_ADMIN_EMAIL, FACEBOOK_ADMIN_PASSWORD)

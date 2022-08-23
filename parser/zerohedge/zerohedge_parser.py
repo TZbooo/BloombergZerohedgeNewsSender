@@ -8,7 +8,7 @@ from logger import logger
 
 class ZeroHedgeParser(ArticlesParser):
     def __init__(self, articles_page_url: str) -> None:
-        super().__init__(articles_page_url, 'ZEROHEDGE')
+        super().__init__(articles_page_url, 'zerohedge.com')
 
     def get_latest_article(self) -> Article:
         logger.info('go to first article')
@@ -21,7 +21,7 @@ class ZeroHedgeParser(ArticlesParser):
             title=article_title,
             text=article_text,
             hashtags=self._hashtags,
-            source='Zerohedge'
+            source='zerohedge.com'
         )
         self._driver.quit()
         return zerohedge_article

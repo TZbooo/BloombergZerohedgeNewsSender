@@ -2,7 +2,6 @@ import time
 
 import requests
 import undetected_chromedriver as uc
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup as bs
 
@@ -11,20 +10,16 @@ class ArticlesParser:
     def __init__(self, articles_page_url: str, source: str) -> None:
         self._articles_page_url = articles_page_url
         self._source = source
-        self._hashtags = [
-            '#financialplanningservices', 
-            '#invesmentportfolio',
-            '#CFA', 
-            '#financialplanningprofession']
-        caps = DesiredCapabilities().CHROME
-        caps["pageLoadStrategy"] = "eager"
-        driver = uc.Chrome(desired_capabilities=caps)
+        self._hashtags = ('#financialplanningservices ' 
+                         '#invesmentportfolio ' 
+                         '#CFA ' 
+                         '#financialplanningprofession')
+        driver = uc.Chrome()
         driver.implicitly_wait(20)
         self._driver = driver
 
     def _go_to_first_article_page(self, first_article_link_selector: str) -> str:
         self._driver.get(self._articles_page_url)
-        time.sleep(20)
         articles_page_soup = bs(self._driver.page_source, 'html.parser')
 
         # when you will test this parser very often,
@@ -33,12 +28,12 @@ class ArticlesParser:
         # to "press & hold" button, stop program and comment again
 
         # time.sleep(300)
+
         first_article_url = articles_page_soup.select_one(first_article_link_selector).get('href')
-        if self._source == 'ZEROHEDGE':
+        if self._source == 'zerohedge.com':
             first_article_url = self._articles_page_url + first_article_url
-        print(first_article_url)
+        
         self._driver.get(first_article_url)
-        time.sleep(20)
         first_article_soup = bs(self._driver.page_source, 'html.parser')
         return first_article_soup
 

@@ -10,7 +10,7 @@ from logger import logger
 
 class BloombergParser(ArticlesParser):
     def __init__(self, articles_page_url: str) -> None:
-        super().__init__(articles_page_url, 'BLOOMBERG')
+        super().__init__(articles_page_url, 'bloomberg.com')
 
     def get_latest_article(self) -> Article:
         first_article_soup = self._go_to_first_article_page('div[class^=storyItem__] > a')
@@ -22,6 +22,6 @@ class BloombergParser(ArticlesParser):
             title=article_title,
             text=article_text,
             hashtags=self._hashtags,
-            source='Bloomberg')
+            source='bloomberg.com')
         self._driver.quit()
         return bloomberg_article
