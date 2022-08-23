@@ -19,7 +19,6 @@ class Sender:
         }
 
         message_text = message_text_config[social_network][article.source]
-        message_source = article.source
         link_to_learn_more = '...\n<a href="https://www.facebook.com/SovereignWealthManagementLLC/">learn more</a>\n'
 
         if social_network == 'FACEBOOK':
