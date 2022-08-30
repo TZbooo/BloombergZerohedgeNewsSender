@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 
 
-@dataclass
 class Article:
-    title: str
-    text: str
-    hashtags: list[str]
-    source: str
+    def __init__(self, title, text, hashtags, source):
+        self.title = title
+        self.text = text
+        self.hashtags = hashtags
+        self.source = source
 
 
 class SocialNetwork:
