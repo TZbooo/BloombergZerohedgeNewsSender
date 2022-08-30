@@ -26,7 +26,6 @@ class FacebookSender(Sender):
 
         logger.info('start loading of group page')
         self.__driver.get(self.__group_url)
-        time.sleep(15)
 
         self.__click_start_type_text_button()
 
@@ -41,20 +40,24 @@ class FacebookSender(Sender):
     def __create_driver(self) -> None:
         options = ChromeOptions()
         options.add_argument('--disable-notifications')
+        options.add_argument('--start-maximized')
         self.__driver = uc.Chrome(options=options)
         self.__driver.implicitly_wait(60)
         self.__actions = ActionChains(self.__driver)
         self.__wait = WebDriverWait(self.__driver, 60)
 
     def __create_post(self) -> None:
-        self.__click_create_post_button()
+        try:
+            self.__click_create_post_button()
 
-        self.__actions.send_keys(Keys.ESCAPE)
-        self.__actions.perform()
-        time.sleep(15)
+            self.__actions.send_keys(Keys.ESCAPE)
+            self.__actions.perform()
+            time.sleep(15)
 
-        self.__click_start_type_text_button()
-        self.__click_create_post_button()
+            self.__click_start_type_text_button()
+            self.__click_create_post_button()
+        except:
+            pass
 
     def __send_fragmented_text(self, message_text: str) -> None:
         # when you click create post button will opened frame with text input
@@ -72,13 +75,17 @@ class FacebookSender(Sender):
             self.__actions.perform()
 
     def __click_start_type_text_button(self) -> None:
+        try:
+            view_page_button = self.__wait.until(EC.visibility_of_element_located(
+                (By.CSS_SELECTOR, 'div[aria-label="Посмотреть сейчас"]')))
+            view_page_button.click()
+        except:
+            pass
+
         # on the group page exists button for create post, code in below move
         # to it and click
         create_post_text_button = self.__wait.until(EC.visibility_of_element_located(
-            (By.XPATH, '//span[text()="Создать публикацию"]/../../../../..')))
-
-        logger.info('move viewport to create_post_button')
-        self.__actions.move_to_element(create_post_text_button).perform()
+            (By.XPATH, '//span[text()="Что у вас нового?"]/../..')))
 
         logger.info('click to create post button')
         create_post_text_button.click()

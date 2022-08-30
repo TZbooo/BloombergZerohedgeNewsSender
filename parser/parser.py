@@ -3,6 +3,7 @@ import time
 import requests
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
+from selenium.webdriver import ChromeOptions
 from bs4 import BeautifulSoup as bs
 
 
@@ -14,7 +15,9 @@ class ArticlesParser:
                          '#invesmentportfolio ' 
                          '#CFA ' 
                          '#financialplanningprofession')
-        driver = uc.Chrome()
+        options = ChromeOptions()
+        options.add_argument('--start-maximized')
+        driver = uc.Chrome(options=options)
         driver.implicitly_wait(20)
         self._driver = driver
 
