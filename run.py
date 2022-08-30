@@ -34,6 +34,7 @@ def send_articles():
         facebook_sender = FacebookSender(FACEBOOK_GROUP_URL, FACEBOOK_ADMIN_EMAIL, FACEBOOK_ADMIN_PASSWORD)
         facebook_sender.send_article(zerohedge_article)
         facebook_sender.send_article(bloomberg_article)
+
         telegram_sender = TelegramSender(TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL_ID)
         telegram_sender.send_article(zerohedge_article)
         telegram_sender.send_article(bloomberg_article)
