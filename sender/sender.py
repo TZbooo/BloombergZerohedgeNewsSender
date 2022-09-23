@@ -1,5 +1,3 @@
-import re
-
 from parser.data_models import Article
 
 
@@ -11,22 +9,15 @@ class Sender:
                 'bloomberg.com': '\n\n'.join(article.text[:2]),
                 # get 5 first paragraphs
                 'zerohedge.com': '\n\n'.join(article.text[:5]),
-            },
-            'FACEBOOK': {
-                'bloomberg.com': '\n\n'.join(article.text),
-                'zerohedge.com': '\n\n'.join(article.text),
-            },
+            }
         }
 
         message_text = message_text_config[social_network][article.source]
         link_to_learn_more = '...\n<a href="https://www.facebook.com/SovereignWealthManagementLLC/">learn more</a>\n'
 
-        if social_network == 'FACEBOOK':
-            link_to_learn_more = ''
-
         message_text = (f'{article.title}\n\n'
-                       f'{message_text}'
-                       f'{link_to_learn_more}\n\n'
-                       f'{article.source}\n\n'
-                       f'{article.hashtags}')
+                        f'{message_text}'
+                        f'{link_to_learn_more}\n\n'
+                        f'{article.source}\n\n'
+                        f'{article.hashtags}')
         return message_text

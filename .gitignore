@@ -6,3 +6,4 @@ __pycache__/
 *.swp
 *.out
 github_token.txt
+auto-sender-cache.json
