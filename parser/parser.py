@@ -1,24 +1,21 @@
-from selenium.webdriver.chrome.webdriver import Options
-from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver import ChromeOptions
 from bs4 import BeautifulSoup as bs
+import undetected_chromedriver as uc
 
 
 class ArticlesParser:
     def __init__(self, articles_page_url: str, source: str) -> None:
         self._articles_page_url = articles_page_url
         self._source = source
-        self._hashtags = ('#financialplanningservices ' 
-                         '#invesmentportfolio ' 
-                         '#CFA ' 
+        self._hashtags = ('#financialplanningservices '
+                         '#invesmentportfolio '
+                         '#CFA '
                          '#financialplanningprofession')
                          
-        options = Options()
-        options.add_argument('--user-data-dir=selenium')
-        options.add_argument('--no-sandbox')
-        driver = webdriver.Remote(command_executor='http://127.0.0.0:4444/wd/hub', 
-                                  desired_capabilities=DesiredCapabilities.CHROME, 
-                                  options=options)
+        chrome_options = ChromeOptions()
+        chrome_options.add_argument('--user-data-dir=selenium')
+        chrome_options.add_argument('--no-sandbox')
+        driver = uc.Chrome(options=chrome_options)
         driver.implicitly_wait(20)
         self._driver = driver
 

@@ -6,5 +6,9 @@ selenium/
 *.log
 *.swp
 *.out
+*.jar
+chromedriver
+*.zip
+*.bash
 github_token.txt
 auto-sender-cache.json

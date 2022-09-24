@@ -1,6 +1,8 @@
 import os
 import json
+import hashlib
 
+from logger import logger
 from parser.data_models import Article
 
 
@@ -25,7 +27,7 @@ class Sender:
                         f'{article.hashtags}')
         return message_text
 
-    def send_article(self) -> None:
+    def send_article(self, article: Article) -> None:
         cache_structure = {
             'bloomberg.com': {
                 'last_article_title_hash': ''
@@ -37,3 +39,17 @@ class Sender:
         if not os.path.exists('auto-sender-cache.json'):
             with open('auto-sender-cache.json', 'w', encoding='utf-8') as file:
                 json.dump(cache_structure, file, indent=4)
+
+        with open('auto-sender-cache.json', 'r', encoding='utf-8') as file:
+            auto_sender_cache = json.load(file)
+
+        if hashlib.md5(article.title.encode('utf-8')).hexdigest() == auto_sender_cache[article.source]['last_article_title_hash']:
+            logger.info('article is duplicate')
+            return False
+
+        auto_sender_cache[article.source]['last_article_title_hash'] = hashlib.md5(article.title.encode('utf-8')).hexdigest()
+
+        with open('auto-sender-cache.json', 'w', encoding='utf-8') as file:
+            json.dump(auto_sender_cache, file, indent=4)
+        
+        return True
