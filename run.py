@@ -21,22 +21,21 @@ def send_articles():
         logger.info('zerohedge parser init')
         logger.info('start zerohedge parsing')
         zerohedge_article = zerohedge_parser.get_latest_article() 
-        # bloomberg_parser = BloombergParser(BLOOMBERG_ARTICLES_PAGE_URL)
+        bloomberg_parser = BloombergParser(BLOOMBERG_ARTICLES_PAGE_URL)
         logger.info('bloomberg parser init')
         logger.info('start bloomberg parser')
-        # bloomberg_article = bloomberg_parser.get_latest_article()
+        bloomberg_article = bloomberg_parser.get_latest_article()
         logger.info('start sending')
         telegram_sender = TelegramSender(TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL_ID)
         telegram_sender.send_article(zerohedge_article)
-        # telegram_sender.send_article(bloomberg_article)
+        telegram_sender.send_article(bloomberg_article)
         logger.info('end sending')
 
 if __name__ == '__main__':
-    send_articles()
-    # os.environ['TZ'] = 'America/New_York'
-    # time.tzset()
-    # schedule.every().day.at('18:25').do(send_articles)
+    os.environ['TZ'] = 'America/New_York'
+    time.tzset()
+    schedule.every().day.at('18:25').do(send_articles)
 
-    # while True:
-    #     schedule.run_pending()
-    #     time.sleep(1)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
