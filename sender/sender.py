@@ -1,3 +1,6 @@
+import os
+import json
+
 from parser.data_models import Article
 
 
@@ -21,3 +24,16 @@ class Sender:
                         f'{article.source}\n\n'
                         f'{article.hashtags}')
         return message_text
+
+    def send_article(self) -> None:
+        cache_structure = {
+            'bloomberg.com': {
+                'last_article_title_hash': ''
+            },
+            'zerohedge.com': {
+                'last_article_title_hash': ''
+            }
+        }
+        if not os.path.exists('auto-sender-cache.json'):
+            with open('auto-sender-cache.json', 'w', encoding='utf-8') as file:
+                json.dump(cache_structure, file, indent=4)

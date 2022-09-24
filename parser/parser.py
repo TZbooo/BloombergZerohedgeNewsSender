@@ -1,9 +1,6 @@
-import time
-
-import requests
-import undetected_chromedriver as uc
-from selenium.webdriver.common.by import By
-from selenium.webdriver import ChromeOptions
+from selenium.webdriver.chrome.webdriver import Options
+from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from bs4 import BeautifulSoup as bs
 
 
@@ -15,22 +12,19 @@ class ArticlesParser:
                          '#invesmentportfolio ' 
                          '#CFA ' 
                          '#financialplanningprofession')
-        options = ChromeOptions()
-        options.add_argument('--start-maximized')
-        driver = uc.Chrome(options=options)
+                         
+        options = Options()
+        options.add_argument('--user-data-dir=selenium')
+        options.add_argument('--no-sandbox')
+        driver = webdriver.Remote(command_executor='http://127.0.0.0:4444/wd/hub', 
+                                  desired_capabilities=DesiredCapabilities.CHROME, 
+                                  options=options)
         driver.implicitly_wait(20)
         self._driver = driver
 
     def _go_to_first_article_page(self, first_article_link_selector: str) -> str:
         self._driver.get(self._articles_page_url)
         articles_page_soup = bs(self._driver.page_source, 'html.parser')
-
-        # when you will test this parser very often,
-        # you will see message about strange activily, and if you saw this message --
-        # uncomment this code and press holding,
-        # to "press & hold" button, stop program and comment again
-
-        # time.sleep(300)
 
         first_article_url = articles_page_soup.select_one(first_article_link_selector).get('href')
         if self._source == 'zerohedge.com':

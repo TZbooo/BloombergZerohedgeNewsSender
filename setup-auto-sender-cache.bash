@@ -1,1 +1,0 @@
-mv auto-sender-cache.json.example auto-sender-cache.json
