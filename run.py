@@ -1,6 +1,5 @@
 import time
 import os
-from multiprocessing import Process
 
 import schedule
 from xvfbwrapper import Xvfb
@@ -32,10 +31,11 @@ def send_articles():
         logger.info('end sending')
 
 if __name__ == '__main__':
-    os.environ['TZ'] = 'America/New_York'
-    time.tzset()
-    schedule.every().day.at('18:25').do(send_articles)
+    send_articles()
+    # os.environ['TZ'] = 'America/New_York'
+    # time.tzset()
+    # schedule.every().day.at('18:25').do(send_articles)
 
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+    # while True:
+    #     schedule.run_pending()
+    #     time.sleep(1)

@@ -2,6 +2,8 @@ from selenium.webdriver import ChromeOptions
 from bs4 import BeautifulSoup as bs
 import undetected_chromedriver as uc
 
+from logger import logger
+
 
 class ArticlesParser:
     def __init__(self, articles_page_url: str, source: str) -> None:
@@ -13,7 +15,6 @@ class ArticlesParser:
                          '#financialplanningprofession')
                          
         chrome_options = ChromeOptions()
-        chrome_options.add_argument('--user-data-dir=selenium')
         chrome_options.add_argument('--no-sandbox')
         driver = uc.Chrome(options=chrome_options)
         driver.implicitly_wait(20)
@@ -21,11 +22,14 @@ class ArticlesParser:
 
     def _go_to_first_article_page(self, first_article_link_selector: str) -> str:
         self._driver.get(self._articles_page_url)
+        logger.info('go to articles')
         articles_page_soup = bs(self._driver.page_source, 'html.parser')
-
+        
+        logger.info('finding first article')
         first_article_url = articles_page_soup.select_one(first_article_link_selector).get('href')
         if self._source == 'zerohedge.com':
             first_article_url = self._articles_page_url + first_article_url
+        logger.info(f'first article is {first_article_url}')
         
         self._driver.get(first_article_url)
         first_article_soup = bs(self._driver.page_source, 'html.parser')
